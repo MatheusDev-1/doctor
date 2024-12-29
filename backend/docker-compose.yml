@@ -1,0 +1,49 @@
+services:
+  db:
+    image: mysql:8.0.11
+    container_name: mysql-container
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: database
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./my.cnf:/etc/mysql/my.cnf
+      - mysql-data:/var/lib/mysql
+
+    command: |
+          bash -c "chmod 644 /etc/mysql/my.cnf && \
+          mkdir -p /var/lib/mysql-files && \
+          chown -R mysql:mysql /var/lib/mysql-files && \
+          docker-entrypoint.sh mysqld" 
+    networks:
+      - backend-network
+
+  # backend:
+  #   build:
+  #     context: .
+  #   container_name: django-backend
+  #   command: python manage.py runserver 0.0.0.0:8000
+  #   volumes:
+  #     - ./backend:/
+  #   working_dir: /
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - DB_NAME=doctor_db
+  #     - DB_USER=admin
+  #     - DB_PASSWORD=admin
+  #     - DB_HOST=db
+  #     - DB_PORT=3306
+  #   depends_on:
+  #     - db
+  #   networks:
+  #     - backend-network
+
+volumes:
+  mysql-data:
+
+networks:
+  backend-network:
