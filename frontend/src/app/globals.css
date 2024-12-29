@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 170 68% 100%;
+    --foreground: 170 75% 0%;
+    --muted: 170 28% 89%;
+    --muted-foreground: 170 3% 31%;
+    --popover: 0 0% 99%;
+    --popover-foreground: 0 0% 0%;
+    --card: 0 0% 99%;
+    --card-foreground: 0 0% 0%;
+    --border: 170 3% 94%;
+    --input: 170 3% 94%;
+    --primary: 170 41% 70%;
+    --primary-foreground: 170 41% 10%;
+    --secondary: 170 10% 85%;
+    --secondary-foreground: 170 10% 25%;
+    --accent: 170 10% 85%;
+    --accent-foreground: 170 10% 25%;
+    --destructive: 9 82% 36%;
+    --destructive-foreground: 9 82% 96%;
+    --ring: 170 41% 70%;
+    --chart-1: 170 41% 70%;
+    --chart-2: 170 10% 85%;
+    --chart-3: 170 10% 85%;
+    --chart-4: 170 10% 88%;
+    --chart-5: 170 44% 70%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 170 37% 2%;
+    --foreground: 170 14% 98%;
+    --muted: 170 28% 11%;
+    --muted-foreground: 170 3% 69%;
+    --popover: 170 37% 3%;
+    --popover-foreground: 170 14% 99%;
+    --card: 170 37% 3%;
+    --card-foreground: 170 14% 99%;
+    --border: 170 3% 10%;
+    --input: 170 3% 10%;
+    --primary: 170 41% 70%;
+    --primary-foreground: 170 41% 10%;
+    --secondary: 170 15% 16%;
+    --secondary-foreground: 170 15% 76%;
+    --accent: 170 15% 16%;
+    --accent-foreground: 170 15% 76%;
+    --destructive: 9 82% 53%;
+    --destructive-foreground: 0 0% 100%;
+    --ring: 170 41% 70%;
+    --chart-1: 170 41% 70%;
+    --chart-2: 170 15% 16%;
+    --chart-3: 170 15% 16%;
+    --chart-4: 170 15% 19%;
+    --chart-5: 170 44% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  input[type='date']::-webkit-inner-spin-button,
+  input[type='date']::-webkit-calendar-picker-indicator {
+    display: none;
+    -webkit-appearance: none;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px white inset !important;
+  }
+}
