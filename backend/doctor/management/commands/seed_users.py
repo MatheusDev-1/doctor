@@ -6,10 +6,10 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         users = [
-            {"role": "admin", "email": "admin@lilium.com", "password": "admin#123456", "first_name": "Admin", "last_name": "Lilium", "gender": "male", "birth_date": "1990-02-05"},
-            {"role": "doctor", "email": "doctor@lilium.com", "password": "doctor#123456", "first_name": "Doctor", "last_name": "Lilium", "gender": "male", "birth_date": "1990-02-05"},
-            {"role": "nurse", "email": "nurse@lilium.com", "password": "nurse#123456", "first_name": "Nurse", "last_name": "Lilium", "gender": "female", "birth_date": "1990-02-05"},
-            {"role": "patient", "email": "patient@lilium.com", "password": "patient#123456", "first_name": "Patient", "last_name": "Lilium", "gender": "male", "birth_date": "1990-02-05"},
+            {"role": "admin", "email": "admin@lilium.com", "password": "admin#123456", "first_name": "Admin", "last_name": "Lilium", "sex": "male", "birth_date": "1990-02-05"},
+            {"role": "doctor", "email": "doctor@lilium.com", "password": "doctor#123456", "first_name": "Doctor", "last_name": "Lilium", "sex": "male", "birth_date": "1990-02-05"},
+            {"role": "nurse", "email": "nurse@lilium.com", "password": "nurse#123456", "first_name": "Nurse", "last_name": "Lilium", "sex": "female", "birth_date": "1990-02-05"},
+            {"role": "patient", "email": "patient@lilium.com", "password": "patient#123456", "first_name": "Patient", "last_name": "Lilium", "sex": "male", "birth_date": "1990-02-05"},
         ]
 
         for user in users:
@@ -18,7 +18,7 @@ class Command(BaseCommand):
                 email=user["email"],
                 first_name=user["first_name"],
                 last_name=user["last_name"],
-                gender=user["gender"],
+                sex=user["sex"],
                 birth_date=user["birth_date"],
             )
             if created:

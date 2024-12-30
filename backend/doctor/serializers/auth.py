@@ -17,7 +17,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Users
-        fields = ('email', 'first_name', 'password', 'last_name', 'gender', 'birth_date', 'role')
+        fields = ('email', 'first_name', 'password', 'last_name', 'sex', 'birth_date', 'role')
 
     def create(self, data):
         user = Users.objects.create(**data) 
@@ -37,19 +37,17 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
-    def validate(self, attrs):
-        data = super().validate(attrs)
-        user = self.user  
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        token['user'] = {}
         
-        result = {
-            'access': data['access'],  
-            'refresh': data['refresh'],  
-            'user': {
-                'first_name': user.first_name,
-                'last_name': user.last_name,  
-                'email': user.email,
-                'role': user.role 
-            }
-        }
+        token['user']['email'] = user.email
+        token['user']['is_staff'] = user.is_staff
+        token['user']['is_active'] = user.is_active
+        token['user']['full_name'] = f"{user.first_name} {user.last_name}"
+        token['user']['first_name'] = user.first_name
+        token['user']['last_name'] = user.last_name
+        token['user']['role'] = user.role
 
-        return result
+        return token

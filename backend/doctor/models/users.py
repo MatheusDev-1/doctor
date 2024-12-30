@@ -16,7 +16,7 @@ class Users(AbstractBaseUser):
     first_name = models.CharField(max_length=40)
     last_name = models.CharField(max_length=40)
     birth_date = models.DateField(null=True, blank=True)
-    gender = models.CharField(max_length=50, null=True)
+    sex = models.CharField(max_length=50, null=True)
     role = models.CharField(max_length=50)
 
     is_active = models.BooleanField(default=True)

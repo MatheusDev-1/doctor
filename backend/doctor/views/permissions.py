@@ -16,9 +16,16 @@ class PermissionView(APIView):
 
         if role:
             permissions = self.permission_service.get_permissions_by_role(role)
-            serializer = PermissionSerializer(permissions, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+
+            return Response(permissions, status=status.HTTP_200_OK)
 
         permissions = self.permission_service.list_permissions()
         return Response(permissions, status=status.HTTP_200_OK)
+
+    def post(self, request):
+        permissions = request.data
+
+        self.permission_service.update_bulk_permissions(permissions)
+
+        return Response({"message": "Updated successfully"}, status=status.HTTP_201_CREATED)
     
