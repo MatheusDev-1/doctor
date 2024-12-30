@@ -9,7 +9,7 @@ type Permissions = {
 
 type PermissionsContextType = {
   permissions: Permissions;
-  setPermissions: () => void;
+  refetchPermissions: () => void;
 };
 
 const PermissionsContext = createContext<PermissionsContextType | undefined>(undefined);
@@ -17,12 +17,14 @@ const PermissionsContext = createContext<PermissionsContextType | undefined>(und
 export const PermissionsProvider = ({ children }: { children: ReactNode }) => {
   const cookies = parseCookies();
   const isLoggedIn = cookies.accessToken;
-  const { data: permissions = {}, refetch: setPermissions } = isLoggedIn
-    ? usePermissionsHook('')
-    : { data: {}, refetch: () => {} };
+  const {
+    data: permissions = {},
+    refetch: refetchPermissions,
+    isLoading,
+  } = isLoggedIn ? usePermissionsHook() : { data: {}, refetch: () => {} };
 
   return (
-    <PermissionsContext.Provider value={{ permissions, setPermissions }}>
+    <PermissionsContext.Provider value={{ permissions, refetchPermissions, isLoading }}>
       {children}
     </PermissionsContext.Provider>
   );

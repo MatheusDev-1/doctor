@@ -58,7 +58,7 @@ export const columns: ColumnDef<Patient>[] = [
   },
   {
     accessorKey: 'updateTriage',
-    header: 'View Triage',
+    header: 'Edit Triage',
     cell: ({ row }) => {
       return (
         <Link className='text-teal-500' href={`/triage/${row.getValue('id')}`}>

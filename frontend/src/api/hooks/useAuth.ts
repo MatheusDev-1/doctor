@@ -1,10 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import api from '..';
 import Cookies from 'js-cookie';
+import jwt, { Jwt, JwtPayload } from 'jsonwebtoken';
 
 interface ICredentials {
   email: string;
   password: string;
+}
+
+interface ExtendedJWT extends JwtPayload {
+  user: Record<string, string>;
 }
 
 interface SigninResponse {
@@ -17,9 +22,14 @@ const signin = async (credentials: ICredentials) => {
   try {
     const response = await api.post('/auth/signin/', credentials);
     const data: SigninResponse = response.data;
+    const decoded: ExtendedJWT = jwt.decode(data.access);
 
-    Cookies.set('accessToken', data.access, { expires: 1, secure: true });
-    Cookies.set('user', JSON.stringify(data.user), { expires: 1, secure: true });
+    if (decoded) {
+      const user = decoded.user;
+
+      Cookies.set('accessToken', data.access, { expires: decoded.exp });
+      Cookies.set('user', JSON.stringify(user), { expires: decoded.exp });
+    }
 
     return response.data;
   } catch (error) {

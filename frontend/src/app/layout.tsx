@@ -4,6 +4,7 @@ import { cn } from '@/lib/utils';
 import SideNavbar from '@/components/Sidebar';
 import { inter } from '@/components/ui/fonts';
 import { SettingsProvider } from '@/contexts/SettingsContext';
+import { PermissionsProvider } from '@/contexts/PermissionsContext';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import queryClient from '@/api/query-client';
@@ -30,11 +31,13 @@ export default function RootLayout({
         )}
       >
         <QueryClientProvider client={queryClient}>
-          <SettingsProvider>
-            <SideNavbar />
-            <div className='p-8 w-full'>{children}</div>
-            <Toaster />
-          </SettingsProvider>
+          <PermissionsProvider>
+            <SettingsProvider>
+              <SideNavbar />
+              <div className='p-8 w-full'>{children}</div>
+              <Toaster />
+            </SettingsProvider>
+          </PermissionsProvider>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </body>

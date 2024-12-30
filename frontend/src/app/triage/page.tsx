@@ -6,6 +6,9 @@ import { columns } from '@/components/Triage/DataTable/DataTableColumns';
 import PageTitle from '@/components/ui/PageTitle';
 import { Users } from 'lucide-react';
 import TriageCreateUpdateDialog from '@/components/Triage/TriageCreateUpdateDialog';
+import { usePermissions } from '@/contexts/PermissionsContext';
+import { useEffect } from 'react';
+import { usePermissionsHook } from '@/api/hooks/usePermissions';
 
 export type Patient = {
   id: string;
@@ -148,11 +151,17 @@ export default function Triage() {
     },
   ];
 
+  const { permissions, refetchPermissions, isLoading } = usePermissions();
+
+  useEffect(() => {
+    refetchPermissions();
+  }, []);
+
   return (
     <div className='flex flex-col gap-5 w-full'>
       <PageTitle title='Triage' />
       <section className='flex justify-end'>
-        <TriageCreateUpdateDialog />
+        {permissions.can_add_triage && <TriageCreateUpdateDialog />}
       </section>
       <section className='grid w-full grid-cols-1 gap-4 gap-x-8 transition-all sm:grid-cols-2 xl:grid-cols-4'>
         {cardData.map(({ status, eta, icon, loading, totalPatients }, index) => (
@@ -161,13 +170,15 @@ export default function Triage() {
             eta={eta}
             icon={icon}
             status={status}
-            loading={loading}
+            loading={isLoading}
             totalPatients={totalPatients}
           />
         ))}
       </section>
       <section>
-        <DataTable loading={false} columns={columns} data={data} />
+        {permissions.can_view_triage && (
+          <DataTable loading={isLoading} columns={columns} data={data} />
+        )}
       </section>
     </div>
   );

@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/table';
 import { Skeleton } from '../../ui/skeleton';
 import { Button } from '../../ui/button';
+import { usePermissions } from '@/contexts/PermissionsContext';
+import { useCallback } from 'react';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,9 +32,33 @@ export function DataTable<TData, TValue>({
   data,
   loading,
 }: DataTableProps<TData, TValue>) {
+  const { permissions } = usePermissions();
+
+  const allowedColumns = useCallback(
+    () =>
+      columns.filter((column) => {
+        const { can_update_triage, can_delete_triage } = permissions;
+        const header = column.header;
+        const isUpdateTriageColumnAndBlockedPermission =
+          header == 'Edit Triage' && !can_update_triage;
+        const isDeleteTriageColumnAndBlockedPermission =
+          header == 'Delete Triage' && !can_delete_triage;
+
+        if (
+          isUpdateTriageColumnAndBlockedPermission ||
+          isDeleteTriageColumnAndBlockedPermission
+        ) {
+          return null;
+        }
+
+        return column;
+      }),
+    [columns]
+  );
+
   const table = useReactTable({
     data,
-    columns,
+    columns: allowedColumns(),
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });

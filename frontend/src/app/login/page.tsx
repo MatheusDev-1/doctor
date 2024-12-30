@@ -17,7 +17,6 @@ import { Button } from '@/components/ui/button';
 import { loginSchema } from '@/schemas';
 import { useSigninMutation } from '@/api/hooks/useAuth';
 import { useRouter } from 'next/navigation';
-import { useSettings } from '@/contexts/SettingsContext';
 
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
@@ -32,15 +31,13 @@ export default function LoginPage() {
   });
 
   const router = useRouter();
-  const { setSettings } = useSettings();
 
   const { mutate: signin, isPending } = useSigninMutation({
     onError: () => {
       setError('email', { message: 'Email or password incorrect' });
       setError('password', { message: 'Email or password incorrect' });
     },
-    onSuccess: async () => {
-      await setSettings();
+    onSuccess: () => {
       router.push('/triage');
     },
   });
